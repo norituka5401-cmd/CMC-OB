@@ -68,7 +68,7 @@ export default function EventPage() {
         setResponses(responsesData as any || []);
 
         const initial: Record<string, "yes" | "maybe" | "no"> = {};
-        optionsData?.forEach(opt => initial[opt.id] = "yes");
+        optionsData?.forEach((opt: Option) => initial[opt.id] = "yes");
         setUserAvailability(initial);
         return;
       }
@@ -107,7 +107,7 @@ export default function EventPage() {
       setResponses(responsesData as any || []);
 
       const initial: Record<string, "yes" | "maybe" | "no"> = {};
-      optionsData?.forEach(opt => initial[opt.id] = "yes");
+      optionsData?.forEach((opt: Option) => initial[opt.id] = "yes");
       setUserAvailability(initial);
       
     } catch (err: any) {
