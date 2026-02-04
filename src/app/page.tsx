@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Trash2, Calendar as CalendarIcon, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
@@ -29,7 +29,13 @@ export default function Home() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [debugLogs, setDebugLogs] = useState<string[]>([]);
-  const [showDebug, setShowDebug] = useState(true); // 直面している問題を解決するためデフォルトON
+  const [showDebug, setShowDebug] = useState(false);
+  const [recentEvents, setRecentEvents] = useState<{id: string, name: string, lastVisit: number}[]>([]);
+
+  useEffect(() => {
+    const recent = JSON.parse(localStorage.getItem("recent_events") || "[]");
+    setRecentEvents(recent);
+  }, []);
 
   const addLog = (msg: string) => {
     console.log(msg);
@@ -280,6 +286,46 @@ export default function Home() {
           </div>
         </form>
       </section>
+
+      {/* Recent Events Section */}
+      {recentEvents.length > 0 && (
+        <section className="animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
+          <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-3">
+            <div className="h-px flex-1 bg-white/5" />
+            最近表示したイベント
+            <div className="h-px flex-1 bg-white/5" />
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {recentEvents.map((ev) => (
+              <button
+                key={ev.id}
+                onClick={() => router.push(`/event/${ev.id}`)}
+                className="glass-card !p-4 flex items-center justify-between group hover:!border-blue-500/50 transition-all text-left"
+              >
+                <div className="flex flex-col gap-1 overflow-hidden">
+                  <span className="font-bold text-slate-200 truncate">{ev.name}</span>
+                  <span className="text-[10px] text-slate-500">
+                    {new Date(ev.lastVisit).toLocaleDateString()} に表示
+                  </span>
+                </div>
+                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-500 group-hover:bg-blue-500/20 group-hover:text-blue-400 transition-all">
+                  <ChevronRight size={16} />
+                </div>
+              </button>
+            ))}
+            {/* Clear Button */}
+            <button 
+              onClick={() => {
+                localStorage.removeItem("recent_events");
+                setRecentEvents([]);
+              }}
+              className="col-span-full mt-2 text-center text-[10px] text-slate-700 hover:text-red-400 transition-colors uppercase font-bold tracking-widest"
+            >
+              表示履歴をクリア
+            </button>
+          </div>
+        </section>
+      )}
 
       {showDebug && (
         <div className="fixed bottom-6 right-6 w-80 bg-slate-900/95 backdrop-blur-md border border-white/10 rounded-2xl p-5 shadow-2xl z-50">

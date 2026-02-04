@@ -109,6 +109,14 @@ export default function EventPage() {
       const initial: Record<string, "yes" | "maybe" | "no"> = {};
       optionsData?.forEach((opt: Option) => initial[opt.id] = "yes");
       setUserAvailability(initial);
+
+      // 最近表示したイベントを保存
+      if (typeof window !== 'undefined' && eventData) {
+        const recent = JSON.parse(localStorage.getItem("recent_events") || "[]");
+        const entry = { id: eventData.id, name: eventData.name, lastVisit: Date.now() };
+        const filtered = recent.filter((e: any) => e.id !== eventData.id);
+        localStorage.setItem("recent_events", JSON.stringify([entry, ...filtered].slice(0, 10)));
+      }
       
     } catch (err: any) {
       console.error("Fetch error:", err);
@@ -222,17 +230,18 @@ export default function EventPage() {
   };
 
   const stats = useMemo(() => {
-    const counts: Record<string, { yes: number, maybe: number }> = {};
-    options.forEach(opt => counts[opt.id] = { yes: 0, maybe: 0 });
+    const counts: Record<string, { yes: number, maybe: number, no: number }> = {};
+    options.forEach(opt => counts[opt.id] = { yes: 0, maybe: 0, no: 0 });
 
     responses.forEach(res => {
       res.availability?.forEach(av => {
         if (av.status === 'yes') counts[av.option_id].yes += 1;
         if (av.status === 'maybe') counts[av.option_id].maybe += 1;
+        if (av.status === 'no') counts[av.option_id].no += 1;
       });
     });
 
-    const maxYes = Math.max(...Object.values(counts).map(c => c.yes), 1);
+    const maxYes = Math.max(...Object.values(counts).map(c => c.yes), 0);
     const winners = Object.entries(counts)
       .filter(([_, c]) => c.yes === maxYes && c.yes > 0)
       .map(([id]) => id);
@@ -355,6 +364,9 @@ export default function EventPage() {
                         </span>
                         <span className="flex items-center text-xs text-yellow-400 bg-yellow-400/10 px-1.5 py-0.5 rounded">
                           △ {stats.counts[opt.id].maybe}
+                        </span>
+                        <span className="flex items-center text-xs text-red-400 bg-red-400/10 px-1.5 py-0.5 rounded">
+                          × {stats.counts[opt.id].no}
                         </span>
                       </div>
                       {stats.winners.includes(opt.id) && (
