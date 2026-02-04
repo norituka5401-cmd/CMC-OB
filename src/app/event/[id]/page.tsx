@@ -503,6 +503,13 @@ export default function EventPage() {
           </div>
         </form>
       </section>
+
+      {/* Version Tag for Debugging */}
+      <div className="text-center pb-10">
+        <p className="text-[10px] text-slate-700 font-mono tracking-widest uppercase">
+          App Version: v1.0.1 (Internal Sync Fix)
+        </p>
+      </div>
     </div>
   );
 }
