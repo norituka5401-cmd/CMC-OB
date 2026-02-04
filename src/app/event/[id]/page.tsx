@@ -266,6 +266,11 @@ export default function EventPage() {
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
+      {/* Debug Banner to verify deployment */}
+      <div className="bg-red-600 text-white text-[10px] py-1 text-center font-bold uppercase tracking-widest fixed top-0 left-0 w-full z-[100] shadow-lg">
+        Sync Verification: v1.0.1 Applied
+      </div>
+      
       {/* Navigation Bar */}
       <div className="flex items-center justify-between">
         <button 
@@ -507,7 +512,7 @@ export default function EventPage() {
       {/* Version Tag for Debugging */}
       <div className="text-center pb-10">
         <p className="text-[10px] text-slate-700 font-mono tracking-widest uppercase">
-          App Version: v1.0.1 (Internal Sync Fix)
+          App Version: v1.0.2 (Fix Applied: 2026-02-04 12:20)
         </p>
       </div>
     </div>
