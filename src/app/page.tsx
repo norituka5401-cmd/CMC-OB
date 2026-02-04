@@ -224,6 +224,11 @@ export default function Home() {
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000 pb-32">
+      {/* Visual Sync Badge */}
+      <div className="fixed top-0 left-0 w-full bg-blue-600 text-white text-[10px] py-1 text-center font-bold uppercase tracking-widest z-[100] shadow-lg">
+        Connected & Synced: v1.0.2 (2026-02-04 12:25)
+      </div>
+
       <section className="glass-card">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold flex items-center gap-3">
