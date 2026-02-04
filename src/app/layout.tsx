@@ -27,7 +27,8 @@ export default function RootLayout({
           </header>
           <main>{children}</main>
           <footer className="mt-20 py-8 border-t border-slate-800 text-center text-slate-500 text-xs">
-            &copy; 2024 Schedule Coordinator App
+            &copy; 2024 Schedule Coordinator App <br/>
+            <span className="text-[10px] opacity-30">Sync Test: v1.0.3-test</span>
           </footer>
         </div>
       </body>
