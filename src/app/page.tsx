@@ -1,5 +1,5 @@
 "use client";
-// Last Sync: 2026-02-04 11:32
+// Last Sync: 2026-02-04 11:58:30 JST (Final Sync Attempt)
 
 import { useState, useEffect } from "react";
 import { Plus, Trash2, Calendar as CalendarIcon, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
